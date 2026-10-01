@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Seguretat Informàtica | Clean Tech</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans for a super clean modern tech look -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for crisp icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            900: '#134e4a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(13, 148, 136, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+        }
+        .header-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="header-glass border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-100 text-brand-600 p-2.5 rounded-2xl flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-shield-cat"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-base md:text-lg leading-tight">Seguretat Informàtica</h1>
+                    <p class="text-xs text-slate-500 font-medium">Avaluació de conceptes clau</p>
+                </div>
+            </div>
+            <div id="status-pill" class="hidden items-center space-x-2 bg-brand-50 border border-brand-100 px-3.5 py-1.5 rounded-full text-xs font-semibold text-brand-700">
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+                <span id="progress-indicator">0 / 20 contestades</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-3xl w-full mx-auto px-6 py-10">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-view" class="bg-white border border-slate-200/80 rounded-3xl p-8 md:p-12 card-shadow text-center transition-all duration-300">
+            <div class="w-20 h-20 bg-brand-50 text-brand-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-sm border border-brand-100/60">
+                <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">Test de Coneixements</h2>
+            <p class="text-slate-600 max-w-lg mx-auto mb-8 text-sm md:text-base leading-relaxed">
+                Posa a prova tot el que has après sobre <span class="text-brand-600 font-semibold">seguretat de la informació</span>, pilars clàssics, criptografia, tipus d'atacs i normativa RGPD a través de 20 preguntes pràctiques.
+            </p>
+            
+            <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-8 text-left">
+                <div class="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl text-center">
+                    <div class="text-brand-600 text-base mb-1"><i class="fa-regular fa-file-lines"></i></div>
+                    <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Preguntes</div>
+                    <div class="font-bold text-slate-800 text-sm">20 Qüestions</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl text-center">
+                    <div class="text-brand-600 text-base mb-1"><i class="fa-regular fa-clock"></i></div>
+                    <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Durada</div>
+                    <div class="font-bold text-slate-800 text-sm">~10 minuts</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl text-center">
+                    <div class="text-brand-600 text-base mb-1"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Revisió</div>
+                    <div class="font-bold text-slate-800 text-sm">Instantània</div>
+                </div>
+            </div>
+
+            <button onclick="startQuiz()" class="inline-flex items-center justify-center space-x-3 bg-brand-600 hover:bg-brand-700 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-brand-500/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-base">
+                <span>Començar el Test</span>
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+        </div>
+
+        <!-- Quiz View -->
+        <div id="quiz-view" class="hidden space-y-6">
+            <div class="bg-white border border-slate-200/80 p-5 rounded-2xl card-shadow flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base">Qüestionari Actiu</h3>
+                    <p class="text-xs text-slate-500">Fes clic sobre l'opció desitjada per a cada pregunta.</p>
+                </div>
+                <div class="w-full sm:w-44 bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div id="progress-bar" class="bg-brand-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <form id="quiz-form" class="space-y-6" onsubmit="event.preventDefault(); submitQuiz();">
+                <!-- Dynamic questions inserted here -->
+            </form>
+
+            <div class="flex justify-center pt-4 pb-12">
+                <button type="button" onclick="submitQuiz()" class="inline-flex items-center justify-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white font-bold px-10 py-4 rounded-2xl shadow-xl shadow-brand-500/25 transition-all transform hover:-translate-y-0.5 text-base">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Finalitzar i Corregir Test</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results View -->
+        <div id="results-view" class="hidden space-y-8">
+            <div class="bg-white border border-slate-200/80 rounded-3xl p-8 md:p-10 card-shadow text-center relative overflow-hidden">
+                <div id="score-circle-wrapper" class="inline-flex items-center justify-center w-28 h-28 rounded-full bg-brand-50 border-4 border-brand-100 text-brand-700 text-3xl font-black mb-6 shadow-sm">
+                    <span id="score-display">0/20</span>
+                </div>
+                
+                <h2 id="result-heading" class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">Test Finalitzat</h2>
+                <p id="result-subtext" class="text-slate-600 max-w-md mx-auto mb-8 text-sm md:text-base leading-relaxed">
+                    Comprova el teu desglossament d'encerts i errors a continuació.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="restartQuiz()" class="inline-flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-6 py-3.5 rounded-2xl transition-all text-sm">
+                        <i class="fa-solid fa-rotate-right text-brand-600"></i>
+                        <span>Tornar a Fer el Test</span>
+                    </button>
+                    <button onclick="scrollToReview()" class="inline-flex items-center space-x-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3.5 rounded-2xl shadow-md shadow-brand-500/20 transition-all text-sm">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Revisar Fallos i Solucions</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Error Review Section -->
+            <div id="review-section" class="space-y-6 pt-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2.5">
+                        <i class="fa-solid fa-clipboard-question text-brand-600"></i>
+                        <span>Desglossament Detallat d'Errors i Encerts</span>
+                    </h3>
+                    <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-3 py-1 rounded-full">Revisió 100%</span>
+                </div>
+
+                <div id="review-cards-container" class="space-y-4">
+                    <!-- Dynamic review items inserted here -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <div class="max-w-3xl mx-auto px-6">
+            <p>Web Estàtica &bull; Seguretat Informàtica &bull; Execució Local Autònoma</p>
+        </div>
+    </footer>
+
+    <!-- App Logic Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                question: "1. Per què cal protegir la informació en un sistema informàtic?",
+                options: [
+                    { key: 'a', text: "Només per complir amb la normativa legal vigent" },
+                    { key: 'b', text: "Perquè és un actiu valuós que pot patir pèrdues, robatori o modificació no autoritzada" },
+                    { key: 'c', text: "Únicament per evitar que els usuaris facen servir programari no autoritzat" },
+                    { key: 'd', text: "Perquè els sistemes informàtics sempre són insegurs per naturalesa" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 2,
+                question: "2. Quins són els tres pilars clàssics de la seguretat de la informació?",
+                options: [
+                    { key: 'a', text: "Autenticació, autorització i auditoria" },
+                    { key: 'b', text: "Confidencialitat, integritat i disponibilitat" },
+                    { key: 'c', text: "Prevenció, detecció i correcció" },
+                    { key: 'd', text: "Física, lògica i activa" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 3,
+                question: "3. La confidencialitat garanteix que:",
+                options: [
+                    { key: 'a', text: "La informació estiga sempre disponible quan es necessite" },
+                    { key: 'b', text: "La informació no siga modificada per persones no autoritzades" },
+                    { key: 'c', text: "Només les persones autoritzades puguen accedir a la informació" },
+                    { key: 'd', text: "Es puga demostrar qui ha enviat un missatge" }
+                ],
+                correct: 'c'
+            },
+            {
+                id: 4,
+                question: "4. La integritat de la informació es refereix a:",
+                options: [
+                    { key: 'a', text: "Que la informació siga exacta, completa i no haja estat alterada de manera no autoritzada" },
+                    { key: 'b', text: "Que la informació estiga xifrada en tot moment" },
+                    { key: 'c', text: "Que la informació estiga disponible 24/7" },
+                    { key: 'd', text: "Que la informació només siga accessible des de la xarxa interna" }
+                ],
+                correct: 'a'
+            },
+            {
+                id: 5,
+                question: "5. La disponibilitat implica que:",
+                options: [
+                    { key: 'a', text: "La informació només estiga accessible en horari laboral" },
+                    { key: 'b', text: "Els usuaris autoritzats puguen accedir a la informació i als recursos quan els calga" },
+                    { key: 'c', text: "La informació estiga duplicada en tres servidors" },
+                    { key: 'd', text: "La informació no es puga esborrar mai" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 6,
+                question: "6. El principi de no repudi (no repudiació) significa que:",
+                options: [
+                    { key: 'a', text: "L'usuari no pot negar haver realitzat una acció o enviat un missatge" },
+                    { key: 'b', text: "L'usuari pot rebutjar les condicions d'ús del sistema" },
+                    { key: 'c', text: "El sistema no pot rebutjar cap petició d'accés" },
+                    { key: 'd', text: "Cap usuari pot ser expulsat del sistema" }
+                ],
+                correct: 'a'
+            },
+            {
+                id: 7,
+                question: "7. Quina diferència hi ha entre seguretat física i seguretat lògica?",
+                options: [
+                    { key: 'a', text: "La física protegeix el maquinari i les instal·lacions; la lògica protegeix les dades i el programari" },
+                    { key: 'b', text: "La física protegeix les dades; la lògica protegeix els equips" },
+                    { key: 'c', text: "Són sinònims i s'utilitzen indistintament" },
+                    { key: 'd', text: "La física només s'aplica a servidors i la lògica a ordinadors personals" }
+                ],
+                correct: 'a'
+            },
+            {
+                id: 8,
+                question: "8. La seguretat passiva es caracteritza per:",
+                options: [
+                    { key: 'a', text: "Actuar abans de produir-se l'incident, prevenint-lo" },
+                    { key: 'b', text: "Detectar i corregir els danys un cop produïda l'amenaça" },
+                    { key: 'c', text: "Xifrar totes les comunicacions de la xarxa" },
+                    { key: 'd', text: "Analitzar les vulnerabilitats del sistema periòdicament" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 9,
+                question: "9. La seguretat activa es caracteritza per:",
+                options: [
+                    { key: 'a', text: "Tenir com a objectiu evitar o prevenir les amenaces abans que es materialitzen" },
+                    { key: 'b', text: "Actuar només després que s'haga produït un atac" },
+                    { key: 'c', text: "Ser sempre més econòmica que la seguretat passiva" },
+                    { key: 'd', text: "No requerir cap mena de manteniment" }
+                ],
+                correct: 'a'
+            },
+            {
+                id: 10,
+                question: "10. Quins són els tres factors d'autenticació clàssics?",
+                options: [
+                    { key: 'a', text: "Usuari, contrasenya i correu electrònic" },
+                    { key: 'b', text: "Una cosa que saps, una cosa que tens i una cosa que tu eres" },
+                    { key: 'c', text: "Xifrat, signatura i hash" },
+                    { key: 'd', text: "Confidencialitat, integritat i disponibilitat" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 11,
+                question: "11. Un exemple de factor d'autenticació biomètric seria:",
+                options: [
+                    { key: 'a', text: "Una contrasenya" },
+                    { key: 'b', text: "Un token USB" },
+                    { key: 'c', text: "L'empremta dactilar o el reconeixement facial" },
+                    { key: 'd', text: "Un certificat digital emmagatzemat al disc" }
+                ],
+                correct: 'c'
+            },
+            {
+                id: 12,
+                question: "12. Què significa el model AAA en seguretat informàtica?",
+                options: [
+                    { key: 'a', text: "Accés, Alerta i Auditoria" },
+                    { key: 'b', text: "Autenticació, Autorització i Auditoria (Accounting)" },
+                    { key: 'c', text: "Antivirus, Antispam i Antimalware" },
+                    { key: 'd', text: "Anàlisi, Avaluació i Acció" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 13,
+                question: "13. La comunicació \"extrem a extrem\" (i2i / end-to-end) implica que:",
+                options: [
+                    { key: 'a', text: "Les dades viatgen xifrades entre els dos extrems i només ells les poden desxifrar" },
+                    { key: 'b', text: "Les dades passen sense xifrar per tots els intermediaris" },
+                    { key: 'c', text: "El servidor central desxifra sempre els missatges" },
+                    { key: 'd', text: "Només s'aplica a xarxes locals" }
+                ],
+                correct: 'a'
+            },
+            {
+                id: 14,
+                question: "14. Què és una vulnerabilitat?",
+                options: [
+                    { key: 'a', text: "Un programa maliciós que ataca el sistema" },
+                    { key: 'b', text: "Una debilitat o error en el sistema que pot ser explotat per una amenaça" },
+                    { key: 'c', text: "Un atac que ja s'ha produït" },
+                    { key: 'd', text: "Una eina per protegir el sistema" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 15,
+                question: "15. Què és un exploit?",
+                options: [
+                    { key: 'a', text: "Un tipus de contrasenya molt segura" },
+                    { key: 'b', text: "Una tècnica, codi o eina que aprofita una vulnerabilitat per comprometre el sistema" },
+                    { key: 'c', text: "Un mètode de xifrat de dades" },
+                    { key: 'd', text: "Un protocol de comunicació segura" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 16,
+                question: "16. Quin d'aquests és un tipus de malware?",
+                options: [
+                    { key: 'a', text: "Tallafocs (firewall)" },
+                    { key: 'b', text: "Xifrat AES" },
+                    { key: 'c', text: "Troià (trojan)" },
+                    { key: 'd', text: "VPN" }
+                ],
+                correct: 'c'
+            },
+            {
+                id: 17,
+                question: "17. Un atac de \"phishing\" consisteix principalment a:",
+                options: [
+                    { key: 'a', text: "Enviar moltes peticions per saturar un servidor" },
+                    { key: 'b', text: "Enganyar l'usuari perquè revele informació confidencial fent-se passar per una entitat de confiança" },
+                    { key: 'c', text: "Xifrar les dades de la víctima i demanar un rescat" },
+                    { key: 'd', text: "Escanejar ports oberts d'una xarxa" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 18,
+                question: "18. Quin és l'objectiu principal del Reglament General de Protecció de Dades (RGPD)?",
+                options: [
+                    { key: 'a', text: "Regular l'ús de programari lliure a les empreses" },
+                    { key: 'b', text: "Protegir les persones físiques pel que fa al tractament de les seves dades personals" },
+                    { key: 'c', text: "Establir les normes tècniques dels sistemes operatius" },
+                    { key: 'd', text: "Regular únicament les transaccions comercials electròniques" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 19,
+                question: "19. En el context de l'Administració electrònica, què cal garantir principalment?",
+                options: [
+                    { key: 'a', text: "Que tots els tràmits es facen presencialment" },
+                    { key: 'b', text: "La identitat dels ciutadans i la integritat i confidencialitat de les seues dades en els tràmits telemàtics" },
+                    { key: 'c', text: "Que els tràmits només es puguen fer amb contrasenya simple" },
+                    { key: 'd', text: "Que no es guarde cap registre dels tràmits realitzats" }
+                ],
+                correct: 'b'
+            },
+            {
+                id: 20,
+                question: "20. Quina afirmació sobre els tipus d'atacs és correcta?",
+                options: [
+                    { key: 'a', text: "Els atacs passius només modifiquen la informació sense llegir-la" },
+                    { key: 'b', text: "Els atacs actius busquen modificar, interrompre o destruir recursos, mentre que els passius solen interceptar o escoltar informació sense alterar-la" },
+                    { key: 'c', text: "Tots els atacs són sempre actius" },
+                    { key: 'd', text: "Els atacs passius sempre deixen traces evidents al sistema" }
+                ],
+                correct: 'b'
+            }
+        ];
+
+        let userAnswers = {};
+
+        function startQuiz() {
+            document.getElementById('welcome-view').classList.add('hidden');
+            document.getElementById('quiz-view').classList.remove('hidden');
+            document.getElementById('status-pill').classList.remove('hidden');
+            document.getElementById('status-pill').classList.add('flex');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderForm();
+        }
+
+        function renderForm() {
+            const form = document.getElementById('quiz-form');
+            form.innerHTML = '';
+
+            quizData.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200/80 rounded-2xl p-6 md:p-8 card-shadow transition-all";
+                
+                let optsHtml = '';
+                q.options.forEach(opt => {
+                    const isSelected = userAnswers[q.id] === opt.key;
+                    const styleClass = isSelected 
+                        ? 'border-brand-500 bg-brand-50/70 text-slate-900 font-semibold shadow-sm' 
+                        : 'border-slate-200/80 bg-slate-50/50 text-slate-700 hover:border-slate-300 hover:bg-slate-50';
+
+                    optsHtml += `
+                        <label class="flex items-start space-x-3.5 p-3.5 rounded-xl border ${styleClass} cursor-pointer transition-all option-label-${q.id}" onclick="selectAnswer(${q.id}, '${opt.key}')">
+                            <input type="radio" name="q_${q.id}" value="${opt.key}" ${isSelected ? 'checked' : ''} class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                            <span class="text-sm leading-relaxed"><strong class="mr-1">${opt.key.toUpperCase()}.</strong> ${opt.text}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full">Pregunta ${index + 1} de 20</span>
+                        <span id="label-saved-${q.id}" class="text-xs text-slate-400 font-medium">${userAnswers[q.id] ? ' Contestada' : ' Pendent'}</span>
+                    </div>
+                    <h4 class="text-base md:text-lg font-bold text-slate-900 mb-5 leading-snug">${q.question}</h4>
+                    <div class="space-y-2.5">
+                        ${optsHtml}
+                    </div>
+                `;
+                form.appendChild(card);
+            });
+            updateProgress();
+        }
+
+        function selectAnswer(qid, key) {
+            userAnswers[qid] = key;
+            
+            // Refresh visual states for this question's options
+            const labels = document.querySelectorAll(`.option-label-${qid}`);
+            labels.forEach(lbl => {
+                const radio = lbl.querySelector('input');
+                if (radio.value === key) {
+                    lbl.className = "flex items-start space-x-3.5 p-3.5 rounded-xl border border-brand-500 bg-brand-50/70 text-slate-900 font-semibold shadow-sm cursor-pointer transition-all option-label-" + qid;
+                } else {
+                    lbl.className = "flex items-start space-x-3.5 p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 text-slate-700 hover:border-slate-300 hover:bg-slate-50 cursor-pointer transition-all option-label-" + qid;
+                }
+            });
+
+            const savedIndicator = document.getElementById(`label-saved-${qid}`);
+            if (savedIndicator) {
+                savedIndicator.className = "text-xs text-brand-600 font-semibold";
+                savedIndicator.innerHTML = "<i class=\"fa-solid fa-check text-[10px]\"></i> Contestada";
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(userAnswers).length;
+            const pct = (answered / 20) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('progress-indicator').innerText = `${answered} / 20 contestades`;
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach(q => {
+                if (userAnswers[q.id] === q.correct) score++;
+            });
+
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('status-pill').classList.add('hidden');
+            document.getElementById('status-pill').classList.remove('flex');
+            
+            const resultsView = document.getElementById('results-view');
+            resultsView.classList.remove('hidden');
+
+            document.getElementById('score-display').innerText = `${score}/20`;
+            
+            const heading = document.getElementById('result-heading');
+            const subtext = document.getElementById('result-subtext');
+            const wrapper = document.getElementById('score-circle-wrapper');
+
+            if (score === 20) {
+                heading.innerText = "Excel·lent! Puntuació Màxima";
+                subtext.innerText = "Has respost correctament a totes les preguntes. Domini absolut de la seguretat informàtica!";
+                wrapper.className = "inline-flex items-center justify-center w-28 h-28 rounded-full bg-emerald-50 border-4 border-emerald-200 text-emerald-700 text-3xl font-black mb-6 shadow-sm";
+            } else if (score >= 15) {
+                heading.innerText = "Molt bon resultat!";
+                subtext.innerText = `Has obtingut ${score} de 20 encerts. Coneixements sòlids i ben consolidats.`;
+                wrapper.className = "inline-flex items-center justify-center w-28 h-28 rounded-full bg-brand-50 border-4 border-brand-200 text-brand-700 text-3xl font-black mb-6 shadow-sm";
+            } else if (score >= 10) {
+                heading.innerText = "Test Superat Correctament";
+                subtext.innerText = `Has aconseguit ${score} encerts. Estàs per sobre del mínim, tot i que pots revisar alguns aspectes.`;
+                wrapper.className = "inline-flex items-center justify-center w-28 h-28 rounded-full bg-amber-50 border-4 border-amber-200 text-amber-700 text-3xl font-black mb-6 shadow-sm";
+            } else {
+                heading.innerText = "Convé Repassar el Temari";
+                subtext.innerText = `Has obtingut ${score} encerts. Utilitza la revisió detallada per aprendre dels errors.`;
+                wrapper.className = "inline-flex items-center justify-center w-28 h-28 rounded-full bg-rose-50 border-4 border-rose-200 text-rose-700 text-3xl font-black mb-6 shadow-sm";
+            }
+
+            renderReviewList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderReviewList() {
+            const container = document.getElementById('review-cards-container');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const userAns = userAnswers[q.id] || null;
+                const isCorrect = userAns === q.correct;
+                const userObj = q.options.find(o => o.key === userAns);
+                const correctObj = q.options.find(o => o.key === q.correct);
+
+                const card = document.createElement('div');
+                card.className = `bg-white border rounded-2xl p-6 card-shadow ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+
+                const userStr = userObj ? `${userAns.toUpperCase()}. ${userObj.text}` : '<span class="italic text-slate-400">Sense respondre</span>';
+                const correctStr = `${q.correct.toUpperCase()}. ${correctObj.text}`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4 mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-7 h-7 rounded-xl ${isCorrect ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'} flex items-center justify-center font-bold text-xs shrink-0">
+                                ${idx + 1}
+                            </span>
+                            <h4 class="text-sm md:text-base font-bold text-slate-900 leading-snug">${q.question}</h4>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold shrink-0 ${isCorrect ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-rose-50 text-rose-700 border border-rose-100'}">
+                            ${isCorrect ? '<i class="fa-solid fa-check mr-1"></i> Correcta' : '<i class="fa-solid fa-xmark mr-1"></i> Fallada'}
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100 text-xs md:text-sm">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <span class="text-slate-400 font-semibold block mb-1">La teua resposta:</span>
+                            <span class="${isCorrect ? 'text-emerald-700 font-medium' : 'text-rose-700 font-medium'}">${userStr}</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-emerald-100">
+                            <span class="text-slate-400 font-semibold block mb-1">Resposta correcta:</span>
+                            <span class="text-emerald-700 font-medium">${correctStr}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function restartQuiz() {
+            userAnswers = {};
+            document.getElementById('results-view').classList.add('hidden');
+            document.getElementById('welcome-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToReview() {
+            document.getElementById('review-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
